@@ -1,8 +1,8 @@
 import csv
-import sys
+
 import collections
 
-# (b)
+
 def read_csv_as_dicts(filename, types):
     
     with open(filename) as f:
@@ -14,7 +14,6 @@ def read_csv_as_dicts(filename, types):
             records.append(record)
     return records
 
-# (d)
 
 def read_csv_as_columns(filename, types):
     columns = collections.defaultdict(list)
@@ -26,6 +25,19 @@ def read_csv_as_columns(filename, types):
                 columns[name].append(func(val))
             
     return DataCollection(columns)
+
+
+def read_csv_as_instances(filename, cls):
+    '''
+    Read a CSV file into a list of instances
+    '''
+    records = []
+    with open(filename) as f:
+        rows = csv.reader(f)
+        headers = next(rows)
+        for row in rows:
+            records.append(cls.from_row(row))
+    return records
 
 
 class DataCollection(collections.abc.Sequence):
