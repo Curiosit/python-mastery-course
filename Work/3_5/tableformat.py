@@ -43,3 +43,22 @@ class HTMLTableFormatter(TableFormatter):
         for r in rowdata:
             print('<th>%s</th>' % r, end=' ')
         print('</tr>')
+
+class CSVTableFormatter(TableFormatter):
+    def headings(self, headers):
+        print(','.join(headers))
+
+    def row(self, rowdata):
+        print(','.join(str(d) for d in rowdata))
+        
+#(e)
+def create_formatter(type):
+    if type == 'html':
+        formatter_cls =  HTMLTableFormatter
+    elif type == 'csv':
+        formatter_cls = CSVTableFormatter
+    elif type == 'html':
+        formatter_cls = HTMLTableFormatter
+    else:
+        raise RuntimeError('Unknown format %s' % type)
+    return formatter_cls()
