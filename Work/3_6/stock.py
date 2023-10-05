@@ -41,3 +41,20 @@ class Stock:
 
     def sell(self, nshares):
         self.shares -= nshares
+
+    def __repr__(self):
+        return f'Stock({self.name!r},{self.shares!r},{self.price!r})'
+    def __eq__(self, other):
+        return isinstance(other, Stock) and ((self.name, self.shares, self.price) == 
+                                             (other.name, other.shares, other.price))
+
+
+class redirect_stdout:
+        def __init__(self, out_file):
+            self.out_file = out_file
+        def __enter__(self):
+            self.stdout = sys.stdout
+            sys.stdout = self.out_file
+            return self.out_file
+        def __exit__(self, ty, val, tb):
+            sys.stdout = self.stdout
