@@ -1,7 +1,7 @@
 # reader.py
 
 import csv
-
+from typing import List
 
 
 def csv_as_dicts(lines, types,*, headers=None):
