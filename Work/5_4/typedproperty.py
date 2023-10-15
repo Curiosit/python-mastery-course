@@ -1,15 +1,15 @@
-def typedproperty(name, expected_type):
-    private_name = '_' + name
+def typedproperty(expected_type):
+    
 
     @special_property
     def value(self):
-        return getattr(self, private_name)
+        return getattr(self, value.private_name)
 
     @value.setter
     def value(self, val):
         if not isinstance(val, expected_type):
             raise TypeError(f'Expected {expected_type}')
-        setattr(self, private_name, val)
+        setattr(self, value.private_name, val)
    
     return value
 
@@ -19,12 +19,12 @@ class special_property(property):
         self.private_name = '_' + name
         super().__set_name__(cls, name)
 
-def String(value):
-    typedproperty(value, str)
-def Integer(value):
-    typedproperty(value, int)
-def Float(value):
-    typedproperty(value, float)
+def String():
+    typedproperty(str)
+def Integer():
+    typedproperty(int)
+def Float():
+    typedproperty(float)
 
 
 class Stock:
