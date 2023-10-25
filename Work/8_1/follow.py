@@ -1,23 +1,39 @@
-def frange(start,stop,step):
-        while start < stop:
-            yield start
-            start += step
+# follow.py
+import os
+import time
+
+filename = 'stocklog.csv';
+def follow(filename):
+    print(filename)
+    fil = open(filename)
+    fil.seek(0, os.SEEK_END)
+    while True:
+             line = fil.readline()
+             if line == '':
+                 time.sleep(0.1)    # Sleep briefly to avoid busy wait
+                 continue
+             yield line
 
 
-for x in frange(0, 2, 0.25):
-        print(x, end=' ')
-
-# 0 0.25 0.5 0.75 1.0 1.25 1.5 1.75
 
 
+for line in follow('stocklog.csv'):
+    fields = line.split(',')
+    name = fields[0].strip('"')
+    price = float(fields[1])
+    change = float(fields[4])
+    if change < 0:
+        print('%10s %10.2f %10.2f' % (name, price, change))
 
-class FRange:
-        def __init__(self, start, stop, step):
-            self.start = start
-            self.stop = stop
-            self.step = step
-        def __iter__(self):
-            n = self.start
-            while n < self.stop:
-                yield n
-                n += self.step
+""" while True:
+    line = f.readline()
+    if line == '':
+        time.sleep(0.1)   # Sleep briefly and retry
+        continue
+    fields = line.split(',')
+    name = fields[0].strip('"')
+    price = float(fields[1])
+    change = float(fields[4])
+    if change < 0:
+        print('%10s %10.2f %10.2f' % (name, price, change)) """
+
