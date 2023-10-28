@@ -3,15 +3,18 @@ import os
 import time
 
 # Data source
-def follow(filename,target):
-    with open(filename,'r') as f:
-        f.seek(0,os.SEEK_END)
-        while True:
-            line = f.readline()
-            if line != '':
-                target.send(line)
-            else:
-                time.sleep(0.1)
+def follow(filename):
+    try:
+        with open(filename,'r') as f:
+            f.seek(0,os.SEEK_END)
+            while True:
+                 line = f.readline()
+                 if line == '':
+                     time.sleep(0.1)    # Sleep briefly to avoid busy wait
+                     continue
+                 yield line
+    except GeneratorExit:
+        print('Following Done')
 
 # Decorator for coroutine functions
 from functools import wraps
@@ -28,8 +31,12 @@ def consumer(func):
 @consumer
 def printer():
     while True:
-        item = yield     # Receive an item sent to me
-        print(item)
+        try:
+            item = yield
+            print(item)
+        except Exception as e:
+            print('ERROR: %r' % e)
+
 
 # Example use
 if __name__ == '__main__':
