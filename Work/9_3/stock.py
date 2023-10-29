@@ -1,6 +1,4 @@
-from structly.structure import Structure
-from structly.reader import read_csv_as_instances
-from structly.tableformat import create_formatter, print_table
+from structly import *
 
 class Stock(Structure):
     name = String()
